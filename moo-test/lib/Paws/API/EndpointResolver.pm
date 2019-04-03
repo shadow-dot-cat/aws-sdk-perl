@@ -1,11 +1,13 @@
 package Paws::API::EndpointResolver;
-  use Moose::Role;
+  use Moo::Role;
+  use Types::Standard qw/Str ArrayRef Undef/;
+  use Types::URI qw/Uri/;
   use URI::Template;
   use URI;
   use Paws::Exception;
-  use Moose::Util::TypeConstraints;
+#  use Moose::Util::TypeConstraints;
 
-  has region => (is => 'rw', isa => 'Str|Undef');
+  has region => (is => 'rw', isa => Str|Undef);
   requires 'service';
 
   has _endpoint_info => (
@@ -17,7 +19,7 @@ package Paws::API::EndpointResolver;
 
   has _region_for_signature => (
     is => 'rw',
-    isa => 'Str', 
+    isa => Str,
     lazy => 1,
     init_arg => undef, 
     default => sub {
@@ -43,16 +45,17 @@ package Paws::API::EndpointResolver;
     },
   );
 
-  subtype 'Paws::EndpointURL',
-       as 'URI';
+  # subtype 'Paws::EndpointURL',
+  #      as 'URI';
 
-  coerce 'Paws::EndpointURL',
-    from 'Str',
-     via { URI->new($_); };
+  # coerce 'Paws::EndpointURL',
+  #   from 'Str',
+  #    via { URI->new($_); };
 
   has endpoint => (
     is => 'ro',
-    isa => 'Paws::EndpointURL',
+      #    isa => 'Paws::EndpointURL',
+    isa => Uri,
     lazy => 1,
     coerce => 1,
     default => sub {
@@ -62,7 +65,7 @@ package Paws::API::EndpointResolver;
 
   has endpoint_host => (
     is => 'ro',
-    isa => 'Str',
+    isa => Str,
     lazy => 1,
     default => sub {
       shift->endpoint->host;
@@ -71,16 +74,16 @@ package Paws::API::EndpointResolver;
 
   has _api_endpoint => (
     is => 'ro',
-    isa => 'Str',
+    isa => Str,
     lazy => 1,
     default => sub {
       shift->endpoint->as_string;
     }
   ); 
 
-  has region_rules => (is => 'ro', isa => 'ArrayRef');
+  has region_rules => (is => 'ro', isa => ArrayRef);
 
-  has _default_rules => (is => 'ro', isa => 'ArrayRef', default => sub {
+  has _default_rules => (is => 'ro', isa => ArrayRef, default => sub {
     [ { constraints => [ [ 'region', 'startsWith', 'cn-' ] ], 
         properties => { signatureVersion => 'v4' }, 
         uri => '{scheme}://{service}.{region}.amazonaws.com.cn'
@@ -92,7 +95,7 @@ package Paws::API::EndpointResolver;
     },
   );
 
-  has default_scheme => ( is => 'ro', isa => 'Str', default => 'https' );
+  has default_scheme => ( is => 'ro', isa => Str, default => 'https' );
 
   sub _construct_endpoint {
     my ($self) = @_;

@@ -1,15 +1,16 @@
 package Paws::S3;
   warn "Paws::S3 is not stable / supported / entirely developed" unless $ENV{'PAWS_SILENCE_UNSTABLE_WARNINGS'};
-  use Moose;
+  use Moo;
+  use Types::Standard qw/Int Str HashRef ArrayRef/;
   sub service { 's3' }
   sub signing_name { 's3' }
   sub version { '2006-03-01' }
   sub flattened_arrays { 1 }
-  has max_attempts => (is => 'ro', isa => 'Int', default => 5);
-  has retry => (is => 'ro', isa => 'HashRef', default => sub {
+  has max_attempts => (is => 'ro', isa => Int, default => 5);
+  has retry => (is => 'ro', isa => HashRef, default => sub {
     { base => 'rand', type => 'exponential', growth_factor => 2 }
   });
-  has retriables => (is => 'ro', isa => 'ArrayRef', default => sub { [
+  has retriables => (is => 'ro', isa => ArrayRef, default => sub { [
        sub { defined $_[0]->http_status and $_[0]->http_status == 400 and $_[0]->code eq 'BadDigest' },
        sub { defined $_[0]->http_status and $_[0]->http_status == 400 and $_[0]->code eq 'RequestTimeout' },
   ] });

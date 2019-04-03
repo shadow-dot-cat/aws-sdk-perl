@@ -1,5 +1,5 @@
 package Paws::Net::RestXMLResponse;
-  use Moose;
+  use Moo;
   use XML::Simple qw//;
   use Carp qw(croak);
   use HTTP::Status;
