@@ -1,6 +1,6 @@
 
 package Paws::S3::CreateBucket;
-  use Moose;
+  use Moo;
   has ACL => (is => 'ro', isa => 'Str', header_name => 'x-amz-acl', traits => ['ParamInHeader']);
   has Bucket => (is => 'ro', isa => 'Str', uri_name => 'Bucket', traits => ['ParamInURI'], required => 1);
   has ContentLength => (is => 'ro', isa => 'Int', header_name => 'Content-Length', traits => ['ParamInHeader']);
@@ -12,7 +12,7 @@ package Paws::S3::CreateBucket;
   has GrantWriteACP => (is => 'ro', isa => 'Str', header_name => 'x-amz-grant-write-acp', traits => ['ParamInHeader']);
   has ObjectLockEnabledForBucket => (is => 'ro', isa => 'Bool', header_name => 'x-amz-bucket-object-lock-enabled', traits => ['ParamInHeader']);
 
-  use MooseX::ClassAttribute;
+  use MooX::ClassAttribute;
 
   class_has _api_call => (isa => 'Str', is => 'ro', default => 'CreateBucket');
   class_has _api_uri  => (isa => 'Str', is => 'ro', default => '/{Bucket}');
