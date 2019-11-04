@@ -28,6 +28,7 @@ requires 'File::HomeDir';
 requires 'String::CRC32';
 requires 'Path::Tiny' => '0.017';
 suggests "Future::Mojo";
+requires 'Devel::NYTProf';
 
 on 'develop' => sub {
   requires 'Template';

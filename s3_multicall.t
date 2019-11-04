@@ -3,6 +3,9 @@
 use strict;
 use warnings;
 
+# use lib 'lib';
+# use lib 'auto-lib';
+# use lib 't/lib';
 use lib 'moo-test/lib';
 use lib 'moo-test/auto-lib';
 use lib 'moo-test/t/lib';

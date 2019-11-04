@@ -3,11 +3,13 @@
 use strict;
 use warnings;
 
-use lib 'moo-test/lib';
-use lib 'moo-test/auto-lib';
+#use lib 'moo-test/lib';
+#use lib 'moo-test/auto-lib';
+#use lib 'moo-test/t/lib';
+use lib 'auto-lib';
 use lib 't/lib';
 
-no Moo::sification;
+# no Moo::sification;
 
 use Test::More;
 use Paws;
@@ -15,7 +17,7 @@ use Test::CustomCredentials;
 use JSON::MaybeXS;
 use XML::Simple;
 
-die if $INC{'Moose.pm'};
+# die if $INC{'Moose.pm'};
 
 my $aws = Paws->new(config => { caller => 'Test05Caller', credentials => 'Test::CustomCredentials', region => 'dummy' } );
 
